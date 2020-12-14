@@ -3363,6 +3363,49 @@ paths:
           "https://127.0.0.1:9443/api/am/publisher/v1/apis/export?apiId=96077508-fd01-4fae-bc64-5de0e2baf43c&name=PizzaShackAPI&version=1.0&provider=admin&format=YAML"
           > exportAPI.zip'
 
+  /apis/{apiId}/publishToPostman:
+    post:
+      tags:
+      - Postman Collection
+      summary: Push a Postman Collection to postman.
+      description: |
+        This operation can be used to publish a postman collection to postman web application.
+      parameters:
+      - $ref: '#/components/parameters/apiId'
+      - name: postmanApiKey
+        in: query
+        required: true
+        description:  Postman API Key of the user account
+        schema:
+          type: string
+      responses:
+        200:
+          description: |
+            OK.
+            Publish Successful.
+          headers:
+            Content-Type:
+              description: |
+                The content type of the body.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: string
+                example: ""
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - OAuth2Security:
+        - apim:api_publish
+        - apim:api_create
+      x-code-samples:
+      - lang: Curl
+        source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"'
+
   ######################################################
   # The "Subscription Collection" resource APIs
   ######################################################

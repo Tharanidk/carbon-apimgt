@@ -669,6 +669,24 @@ ApisApiService delegate = new ApisApiServiceImpl();
         return delegate.apisApiIdMonetizePost(apiId, apIMonetizationInfoDTO, securityContext);
     }
 
+    @POST
+    @Path("/{apiId}/publishToPostman")
+    
+    @Produces({ "application/json" })
+    @ApiOperation(value = "Push a Postman Collection to postman.", notes = "This operation can be used to publish a postman collection to postman web application. ", response = String.class, authorizations = {
+        @Authorization(value = "OAuth2Security", scopes = {
+            @AuthorizationScope(scope = "apim:api_publish", description = "Publish API"),
+            @AuthorizationScope(scope = "apim:api_create", description = "Create API")
+        })
+    }, tags={ "Postman Collection",  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK. Publish Successful. ", response = String.class),
+        @ApiResponse(code = 404, message = "Not Found. The specified resource does not exist.", response = ErrorDTO.class),
+        @ApiResponse(code = 500, message = "Internal Server Error.", response = ErrorDTO.class) })
+    public Response apisApiIdPublishToPostmanPost(@ApiParam(value = "**API ID** consisting of the **UUID** of the API. ",required=true) @PathParam("apiId") String apiId,  @NotNull @ApiParam(value = "Postman API Key of the user account",required=true)  @QueryParam("postmanApiKey") String postmanApiKey) throws APIManagementException{
+        return delegate.apisApiIdPublishToPostmanPost(apiId, postmanApiKey, securityContext);
+    }
+
     @PUT
     @Path("/{apiId}")
     @Consumes({ "application/json" })

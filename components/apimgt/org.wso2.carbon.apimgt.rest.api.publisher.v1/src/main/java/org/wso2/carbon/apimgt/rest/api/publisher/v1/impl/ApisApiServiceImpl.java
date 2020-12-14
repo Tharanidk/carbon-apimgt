@@ -194,24 +194,53 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.namespace.QName;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
 public class ApisApiServiceImpl implements ApisApiService {
 
     private static final Log log = LogFactory.getLog(ApisApiServiceImpl.class);
     private static final String API_PRODUCT_TYPE = "APIPRODUCT";
+
+    @Override
+    public Response apisApiIdPublishToPostmanPost(String apiId, String postmanApiKey, MessageContext messageContext) throws APIManagementException{
+
+            APIProvider apiProvider = RestApiCommonUtil.getLoggedInUserProvider();
+            String tenantDomain = RestApiCommonUtil.getLoggedInUserTenantDomain();
+            //this will fail if user does not have access to the API or the API does not exist
+            API api = apiProvider.getAPIbyUUID(apiId, tenantDomain);
+            String updatedDefinition = RestApiCommonUtil.retrieveSwaggerDefinition(api, apiProvider);
+            String finalDefinition = "{\n  \"type\" : \"json\",\n  \"input\": " + updatedDefinition +"}" ;
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        okhttp3.MediaType mediaType = okhttp3.MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, finalDefinition );
+        Request request = new Request.Builder()
+                .url("https://api.getpostman.com/import/openapi")
+                .method("POST", body)
+                .addHeader("x-api-key", (String) postmanApiKey)
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            okhttp3.Response response = client.newCall(request).execute();
+            return Response.ok(response).build();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
 
     @Override
     public Response apisGet(Integer limit, Integer offset, String xWSO2Tenant, String query,

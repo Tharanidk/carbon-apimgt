@@ -3363,7 +3363,6 @@ paths:
           "https://127.0.0.1:9443/api/am/publisher/v1/apis/export?apiId=96077508-fd01-4fae-bc64-5de0e2baf43c&name=PizzaShackAPI&version=1.0&provider=admin&format=YAML"
           > exportAPI.zip'
 
-<<<<<<< HEAD
   /apis/{apiId}/publishToPostman:
     post:
       tags:
@@ -3406,7 +3405,7 @@ paths:
       x-code-samples:
       - lang: Curl
         source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"'
-=======
+
   /apis/import:
     post:
       tags:
@@ -3460,7 +3459,6 @@ paths:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
           -F file=@admin-PizzaShackAPI-1.0.0.zip "https://127.0.0.1:9443/api/am/publisher/v1/apis/import?preserveProvider=false&overwrite=false"'
->>>>>>> upstream/master
 
   ######################################################
   # The "Subscription Collection" resource APIs

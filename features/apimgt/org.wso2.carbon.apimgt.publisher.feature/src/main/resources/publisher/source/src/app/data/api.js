@@ -217,6 +217,20 @@ class API extends Resource {
         return apiZip;
     }
 
+    publishToPostman(apiId,postmanKey){
+        const promisePublish = this.client.then(client => {
+            const payload = {
+                apiId: apiId,
+            };
+            return this.client.apis['Postman Collection'].apisApiIdPublishToPostmanPost(payload,{
+                    postmanApiKey: postmanKey,
+                },
+                this._requestMetaData(),
+            );
+        });
+        return promisePublish.then(response => response.body);
+    }
+
     /**
      * Get detailed policy information of the API
      * @returns {Promise} Promise containing policy detail request calls for all the available policies

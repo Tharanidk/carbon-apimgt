@@ -209,20 +209,19 @@ class API extends Resource {
         const apiZip = this.client.then((client) => {
             return client.apis['Import Export'].get_apis_export({
                 apiId: apiId
-            },  this._requestMetaData({ 
-                    'accept': 'application/zip'
-                })
+            }, this._requestMetaData({
+                'accept': 'application/zip'
+            })
             );
         });
         return apiZip;
     }
 
-    publishToPostman(apiId,postmanKey){
+    publishToPostman(apiId, postmanKey) {
         const promisePublish = this.client.then(client => {
-            const payload = {
-                apiId: apiId,
-            };
-            return this.client.apis['Postman Collection'].apisApiIdPublishToPostmanPost(payload,{
+            return client.apis['Postman Collection'].post_apis__apiId__publishToPostman(
+                {
+                    apiId: apiId,                
                     postmanApiKey: postmanKey,
                 },
                 this._requestMetaData(),
@@ -494,10 +493,10 @@ class API extends Resource {
      * 
      * @param id {String} The api id.
      */
-    generateMockScripts(id=this.id) {
-        const promise_get = this.client.then(client => { 
+    generateMockScripts(id = this.id) {
+        const promise_get = this.client.then(client => {
             return client.apis['APIs'].generateMockScripts(
-                { 
+                {
                     apiId: id,
                 },
                 this._requestMetaData(),
@@ -512,10 +511,10 @@ class API extends Resource {
      * 
      * @param {String} id 
      */
-    getGeneratedMockScriptsOfAPI(id=this.id) {
-        const promise_get = this.client.then(client => { 
-            return client.apis['APIs'].getGeneratedMockScriptsOfAPI( 
-                { 
+    getGeneratedMockScriptsOfAPI(id = this.id) {
+        const promise_get = this.client.then(client => {
+            return client.apis['APIs'].getGeneratedMockScriptsOfAPI(
+                {
                     apiId: id,
                 },
                 this._requestMetaData(),
@@ -580,7 +579,7 @@ class API extends Resource {
         const apiClient = new APIClientFactory().getAPIClient(Utils.getCurrentEnvironment(), Utils.CONST.API_CLIENT).client;
         const promise_scopes = apiClient.then(client => {
             return client.apis['Scopes'].getSharedScopes(
-                { limit, offset},
+                { limit, offset },
                 this._requestMetaData(),
             );
         });
@@ -1855,7 +1854,7 @@ class API extends Resource {
     /**
      * Get the complexity related details of an API
      */
-    
+
     getGraphqlPoliciesComplexity(id) {
         const promisePolicies = this.client.then(client => {
             return client.apis['GraphQL Policies'].get_apis__apiId__graphql_policies_complexity(
@@ -1867,7 +1866,7 @@ class API extends Resource {
         });
         return promisePolicies.then(response => response.body);
     }
-    
+
     /**
      * Update complexity related details of an API
      */
@@ -1901,7 +1900,7 @@ class API extends Resource {
         return promisePolicies.then(response => response.body);
     }
 
-    
+
 
     /**
      *
@@ -1955,12 +1954,12 @@ class API extends Resource {
         });
     }
 
-     /**
-     * Get details of a given API
-     * @param id {string} UUID of the api.
-     * @param callback {function} A callback function to invoke after receiving successful response.
-     * @returns {promise} With given callback attached to the success chain else API invoke promise.
-     */
+    /**
+    * Get details of a given API
+    * @param id {string} UUID of the api.
+    * @param callback {function} A callback function to invoke after receiving successful response.
+    * @returns {promise} With given callback attached to the success chain else API invoke promise.
+    */
     static getAPIById(id, callback = null) {
         const apiClient = new APIClientFactory().getAPIClient(Utils.getCurrentEnvironment(), Utils.CONST.API_CLIENT).client;
         const promiseGet = apiClient.then((client) => {
@@ -2117,7 +2116,7 @@ class API extends Resource {
         } else {
             return promisedAPI;
         }
-       
+
     }
 
     /**

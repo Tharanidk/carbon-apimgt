@@ -53,6 +53,8 @@
   "Apis.Create.WSDL.Steps.ProvideWSDL.implementation.type": "Implementation Type",
   "Apis.Create.WSDL.Steps.ProvideWSDL.passthrough.label": "Pass Through",
   "Apis.Create.WSDL.Steps.ProvideWSDL.url.label": "WSDL URL",
+  "Apis.Details.APIConsole.APIConsole.download.postman": "Postman collection",
+  "Apis.Details.APIConsole.APIConsole.download.swagger": "Publish to Postman",
   "Apis.Details.APIDefinition.APIDefinition.api.definition": "API Definition",
   "Apis.Details.APIDefinition.APIDefinition.api.definition.save.confirmation": "Are you sure you want to save the API Definition? This might affect the existing resources.",
   "Apis.Details.APIDefinition.APIDefinition.api.definition.updated.successfully": "API Definition Updated Successfully",

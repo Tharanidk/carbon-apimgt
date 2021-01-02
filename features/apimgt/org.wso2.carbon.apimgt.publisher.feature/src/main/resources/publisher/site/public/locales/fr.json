@@ -53,6 +53,8 @@
   "Apis.Create.WSDL.Steps.ProvideWSDL.implementation.type": "",
   "Apis.Create.WSDL.Steps.ProvideWSDL.passthrough.label": "",
   "Apis.Create.WSDL.Steps.ProvideWSDL.url.label": "",
+  "Apis.Details.APIConsole.APIConsole.download.postman": "",
+  "Apis.Details.APIConsole.APIConsole.download.swagger": "",
   "Apis.Details.APIDefinition.APIDefinition.api.definition": "",
   "Apis.Details.APIDefinition.APIDefinition.api.definition.save.confirmation": "",
   "Apis.Details.APIDefinition.APIDefinition.api.definition.updated.successfully": "",

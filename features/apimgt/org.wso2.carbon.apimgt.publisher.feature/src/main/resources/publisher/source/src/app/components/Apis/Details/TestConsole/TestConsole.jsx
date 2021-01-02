@@ -36,8 +36,6 @@ import uuid from 'uuid/v4';
 import Alert from 'AppComponents/Shared/Alert';
 import openapiToPostman from 'openapi-to-postmanv2';
 import swaggerToPostman from 'swagger2-postman2-converter';
-import postmanIcon from '@iconify/icons-simple-icons/postman';
-import { Icon as Icons } from '@iconify/react';
 import fileDownload from 'js-file-download';
 import Grid from '@material-ui/core/Grid';
 /**
@@ -367,12 +365,10 @@ class TestConsole extends React.Component {
             });
     }
 
-    publishToPostman(api){
-        console.log("publishtopostman");
+    publishToPostman(api) {
         const restApi = new API();
-        const postmankey="PMAK-5fae3b6cb5024c0054e153a8-a7c7d68475e7b1a6cb03a99e3f83290286";
+        const postmankey = 'PMAK-5fae3b6cb5024c0054e153a8-a7c7d68475e7b1a6cb03a99e3f83290286';
         restApi.publishToPostman(api.id, postmankey);
-
     }
 
     /**
@@ -482,7 +478,6 @@ class TestConsole extends React.Component {
                     <Grid xs={10} item />
                     <Grid xs={1} item>
                         <Button size='small' onClick={() => this.convertToPostman(downloadSwagger)}>
-                            <Icons icon={postmanIcon} width={30} height={30} />
                             <FormattedMessage
                                 id='Apis.Details.APIConsole.APIConsole.download.postman'
                                 defaultMessage='Postman collection'
@@ -491,7 +486,7 @@ class TestConsole extends React.Component {
 
                     </Grid>
                     <Grid xs={1} item>
-                    <Button size='small' onClick={() => this.publishToPostman(api)}>
+                        <Button size='small' onClick={() => this.publishToPostman(api)}>
                             <FormattedMessage
                                 id='Apis.Details.APIConsole.APIConsole.download.swagger'
                                 defaultMessage='Publish to Postman'

@@ -3067,6 +3067,36 @@ paths:
           "https://127.0.0.1:9443/api/am/admin/v1/api-categories/d7cf8523-9180-4255-84fa-6cb171c1f779"'
 
   ######################################################
+  # The "Postman Key" resource API
+  ######################################################
+  /postmanKey:
+    get:
+      tags:
+      - Postman Key
+      summary: Get all Postman Keys
+      description: |
+        Get all Postman API Keys
+      responses:
+        200:
+          description: |
+            OK.
+            Postman-Keys returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostmanKeyList'
+        404:
+          $ref: '#/components/responses/NotFound'
+      security:
+      - OAuth2Security:
+        - apim:admin
+        - apim:admin_operations
+      x-code-samples:
+      - lang: Shell
+        source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
+          "https://127.0.0.1:9443/api/am/admin/v1/postmanKey"'
+
+  ######################################################
   # The Admin settings List
   ######################################################
   /settings:
@@ -4714,6 +4744,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/APICategory'
+    PostmanKey:
+      title: Postman API Key
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: 01
+        name:
+          maxLength: 255
+          minLength: 1
+          type: string
+          example: MyKey 01
+        Key:
+          type: string
+          example: Postman API Key of the User
+
+    PostmanKeyList:
+      title: Postman API Keys List
+      type: object
+      properties:
+        count:
+          type: integer
+          description: |
+            Number of Postman Keys returned.
+          example: 1
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostmanKey'
     FileInfo:
       title: File Information including meta data
       type: object

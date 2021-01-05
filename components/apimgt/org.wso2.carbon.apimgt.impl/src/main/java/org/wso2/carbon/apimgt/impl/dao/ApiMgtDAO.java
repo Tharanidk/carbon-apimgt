@@ -56,6 +56,7 @@ import org.wso2.carbon.apimgt.api.model.LifeCycleEvent;
 import org.wso2.carbon.apimgt.api.model.MonetizationUsagePublishInfo;
 import org.wso2.carbon.apimgt.api.model.OAuthAppRequest;
 import org.wso2.carbon.apimgt.api.model.OAuthApplicationInfo;
+import org.wso2.carbon.apimgt.api.model.PostmanAPIKey;
 import org.wso2.carbon.apimgt.api.model.ResourcePath;
 import org.wso2.carbon.apimgt.api.model.Scope;
 import org.wso2.carbon.apimgt.api.model.SharedScopeUsage;
@@ -14695,6 +14696,38 @@ public class ApiMgtDAO {
             handleException("Failed to retrieve API categories for tenant " + tenantID, e);
         }
         return categoriesList;
+    }
+
+    /**
+     * Get all available Postman API keys of the tenant
+     *
+     * @param tenantID
+     * @return Postman API Key List
+     */
+    public List<PostmanAPIKey> getAllPostmanAPIKeys(int tenantID) throws APIManagementException {
+        List<PostmanAPIKey> KeysList = new ArrayList<>();
+        try (Connection connection = APIMgtDBUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQLConstants.GET_POSTMAN_KEY_BY_TENANT_ID_SQL)) {
+            statement.setInt(1, tenantID);
+
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                String id = rs.getString("UUID");
+                String keyName = rs.getString("KEY_NAME");
+                String keyValue = rs.getString("KEY_VALUE");
+
+                PostmanAPIKey postmankey = new PostmanAPIKey();
+                postmankey.setId(id);
+                postmankey.setKeyName(keyName);
+                postmankey.setKeyValue(keyValue);
+                postmankey.setTenantID(tenantID);
+
+                KeysList.add(postmankey);
+            }
+        } catch (SQLException e) {
+            handleException("Failed to retrieve Postman API Keys for tenant " + tenantID, e);
+        }
+        return KeysList;
     }
 
     /**

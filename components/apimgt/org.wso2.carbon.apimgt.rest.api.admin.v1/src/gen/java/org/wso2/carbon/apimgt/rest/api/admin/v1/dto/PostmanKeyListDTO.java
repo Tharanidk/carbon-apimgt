@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import org.wso2.carbon.apimgt.rest.api.admin.v1.dto.PostmanKeyDTO;
+import org.wso2.carbon.apimgt.rest.api.admin.v1.dto.PostmanAPIKeyDTO;
 import javax.validation.constraints.*;
 
 
@@ -24,7 +24,7 @@ import javax.validation.Valid;
 public class PostmanKeyListDTO   {
   
     private Integer count = null;
-    private List<PostmanKeyDTO> list = new ArrayList<PostmanKeyDTO>();
+    private List<PostmanAPIKeyDTO> list = new ArrayList<PostmanAPIKeyDTO>();
 
   /**
    * Number of Postman Keys returned. 
@@ -46,7 +46,7 @@ public class PostmanKeyListDTO   {
 
   /**
    **/
-  public PostmanKeyListDTO list(List<PostmanKeyDTO> list) {
+  public PostmanKeyListDTO list(List<PostmanAPIKeyDTO> list) {
     this.list = list;
     return this;
   }
@@ -55,10 +55,10 @@ public class PostmanKeyListDTO   {
   @ApiModelProperty(value = "")
       @Valid
   @JsonProperty("list")
-  public List<PostmanKeyDTO> getList() {
+  public List<PostmanAPIKeyDTO> getList() {
     return list;
   }
-  public void setList(List<PostmanKeyDTO> list) {
+  public void setList(List<PostmanAPIKeyDTO> list) {
     this.list = list;
   }
 

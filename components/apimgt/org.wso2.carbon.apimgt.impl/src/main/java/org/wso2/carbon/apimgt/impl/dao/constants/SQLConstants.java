@@ -3103,6 +3103,9 @@ public class SQLConstants {
 
     public static final String GET_SCOPE_KEYS_BY_URL_MAPPING_ID =
             "SELECT SCOPE_NAME FROM AM_API_RESOURCE_SCOPE_MAPPING WHERE URL_MAPPING_ID = ?" ;
+    /** Postman API Keys related constants **/
+
+    public static final String GET_POSTMAN_KEY_BY_TENANT_ID_SQL = "SELECT * FROM POSTMAN_API_KEYS WHERE TENANT_ID = ?";
 
     /** API Categories related constants **/
 

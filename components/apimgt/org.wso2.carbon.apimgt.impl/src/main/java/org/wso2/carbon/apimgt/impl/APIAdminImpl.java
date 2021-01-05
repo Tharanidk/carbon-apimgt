@@ -42,6 +42,7 @@ import org.wso2.carbon.apimgt.api.model.KeyManagerConnectorConfiguration;
 import org.wso2.carbon.apimgt.api.model.Label;
 import org.wso2.carbon.apimgt.api.model.Monetization;
 import org.wso2.carbon.apimgt.api.model.MonetizationUsagePublishInfo;
+import org.wso2.carbon.apimgt.api.model.PostmanAPIKey;
 import org.wso2.carbon.apimgt.api.model.Workflow;
 import org.wso2.carbon.apimgt.api.model.botDataAPI.BotDetectionData;
 import org.wso2.carbon.apimgt.impl.alertmgt.AlertMgtConstants;
@@ -952,5 +953,17 @@ public class APIAdminImpl implements APIAdmin {
     public void deleteTenantTheme(int tenantId) throws APIManagementException {
 
         apiMgtDAO.deleteTenantTheme(tenantId);
+    }
+
+    public List<PostmanAPIKey> getAllPostmanAPIKeys(int tenantId) throws APIManagementException {
+
+        return apiMgtDAO.getAllPostmanAPIKeys(tenantId);
+    }
+
+    @Override
+    public List<PostmanAPIKey> getAPIKeysOftenant(int tenantId) throws APIManagementException {
+        String username = CarbonContext.getThreadLocalCarbonContext().getUsername();
+        List<PostmanAPIKey> KeysList = getAllPostmanAPIKeys(tenantId);
+        return KeysList;
     }
 }

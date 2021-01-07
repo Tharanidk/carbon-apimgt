@@ -42,7 +42,7 @@ public class PostmanKeyApiServiceImpl implements PostmanKeyApiService {
             PostmanKeyListDTO keyListDTO= PostmanAPIKeyMappingUtil.fromPostmanAPIKeyListToPostmanAPIKeyListDTO(KeysList);
             return Response.ok().entity(keyListDTO).build();
 
-        } catch (APIManagementException e) {
+        } catch (APIManagementException | CryptoException e) {
             String errorMessage = "Error while retrieving API categories";
             RestApiUtil.handleInternalServerError(errorMessage, e, log);
         }

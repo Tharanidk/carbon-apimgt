@@ -599,6 +599,14 @@ public class APIAdminImpl implements APIAdmin {
         return botDetectionDatalist;
     }
 
+    @Override
+    public List<PostmanAPIKey> getAPIKeysOftenant(int tenantID) throws APIManagementException, CryptoException {
+        String username = CarbonContext.getThreadLocalCarbonContext().getUsername();
+        List<PostmanAPIKey> KeysList = null;
+            KeysList = getAllPostmanAPIKeys(tenantID);
+        return KeysList;
+    }
+
     /**
      * Extract content of the bot detection data
      *
@@ -960,17 +968,7 @@ public class APIAdminImpl implements APIAdmin {
         return apiMgtDAO.getAllPostmanAPIKeys(tenantId);
     }
 
-    @Override
-    public List<PostmanAPIKey> getAPIKeysOftenant(int tenantId) throws APIManagementException {
-        String username = CarbonContext.getThreadLocalCarbonContext().getUsername();
-        List<PostmanAPIKey> KeysList = null;
-        try {
-            KeysList = getAllPostmanAPIKeys(tenantId);
-        } catch (CryptoException e) {
-            e.printStackTrace();
-        }
-        return KeysList;
-    }
+
 
     @Override
     public PostmanAPIKey addPostmanAPIKey(PostmanAPIKey postmankey, String userName) throws APIManagementException {

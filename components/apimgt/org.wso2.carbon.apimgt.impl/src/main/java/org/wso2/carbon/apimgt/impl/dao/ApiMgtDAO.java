@@ -8981,12 +8981,7 @@ public class ApiMgtDAO {
             }
         }
     }
-
-
-
-
-
-    /**
+   /**
      * Adds a Postman API Key
      *
      * @param tenantID     Logged in user's tenant ID
@@ -14781,7 +14776,7 @@ public class ApiMgtDAO {
                 PostmanAPIKey postmankey = new PostmanAPIKey();
                 postmankey.setId(id);
                 postmankey.setKeyName(keyName);
-                postmankey.setKeyValue(new String(CryptoUtil.getDefaultCryptoUtil().base64DecodeAndDecrypt(keyValue)));
+                postmankey.setKeyValue(new String (CryptoUtil.getDefaultCryptoUtil().base64DecodeAndDecrypt(keyValue)));
                 postmankey.setTenantID(tenantID);
 
                 KeysList.add(postmankey);

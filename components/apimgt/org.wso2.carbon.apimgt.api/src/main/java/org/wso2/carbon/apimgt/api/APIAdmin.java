@@ -173,7 +173,7 @@ public interface APIAdmin  {
      * @throws APIManagementException
      */
 
-    List<PostmanAPIKey> getAPIKeysOftenant(int tenantID) throws APIManagementException, CryptoException, org.wso2.carbon.core.util.CryptoException;
+    List<PostmanAPIKey> getAPIKeysOftenant(int tenantID) throws APIManagementException, org.wso2.carbon.core.util.CryptoException;
 
     /**
      * Add a new Postman API Key for tenant

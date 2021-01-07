@@ -18,12 +18,7 @@
 package org.wso2.carbon.apimgt.api;
 
 import org.wso2.carbon.apimgt.api.dto.KeyManagerConfigurationDTO;
-import org.wso2.carbon.apimgt.api.model.APICategory;
-import org.wso2.carbon.apimgt.api.model.Application;
-import org.wso2.carbon.apimgt.api.model.Label;
-import org.wso2.carbon.apimgt.api.model.Monetization;
-import org.wso2.carbon.apimgt.api.model.MonetizationUsagePublishInfo;
-import org.wso2.carbon.apimgt.api.model.Workflow;
+import org.wso2.carbon.apimgt.api.model.*;
 import org.wso2.carbon.apimgt.api.model.botDataAPI.BotDetectionData;
 
 import java.io.InputStream;
@@ -169,6 +164,27 @@ public interface APIAdmin  {
      * @throws APIManagementException
      */
     List<BotDetectionData> retrieveBotDetectionData() throws APIManagementException;
+
+    /**
+     * Returns all api categories of the tenant with number of APIs for each category
+     *
+     * @param tenantID
+     * @return Postman API Keys
+     * @throws APIManagementException
+     */
+
+    List<PostmanAPIKey> getAPIKeysOftenant(int tenantID) throws APIManagementException, CryptoException, org.wso2.carbon.core.util.CryptoException;
+
+    /**
+     * Add a new Postman API Key for tenant
+     *
+     * @param userName    logged in user name
+     * @param postmankey
+     * @return Postman API Keys
+     * @throws APIManagementException if failed to add a Key
+     */
+
+    PostmanAPIKey addPostmanAPIKey(PostmanAPIKey postmankey, String userName) throws APIManagementException;
 
     /**
      * Adds a new category for the tenant

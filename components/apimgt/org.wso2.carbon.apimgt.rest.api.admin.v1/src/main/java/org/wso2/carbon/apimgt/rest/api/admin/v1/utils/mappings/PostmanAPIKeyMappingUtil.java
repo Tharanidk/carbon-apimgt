@@ -20,6 +20,7 @@ package org.wso2.carbon.apimgt.rest.api.admin.v1.utils.mappings;
 import org.wso2.carbon.apimgt.api.model.PostmanAPIKey;
 import org.wso2.carbon.apimgt.rest.api.admin.v1.dto.PostmanAPIKeyDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.v1.dto.PostmanKeyListDTO;
+import org.wso2.carbon.core.util.CryptoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,12 @@ import java.util.List;
 public class PostmanAPIKeyMappingUtil {
 
     /**
-     * Convert list of API Categories to CategoryListDTO
+     * Convert list of Postman API Keys to PostmanKeyListDTO
      *
      * @param postmankeys List of api categories
-     * @return CategoryListDTO list containing api category data
+     * @return PostmanAPIKeyListDTO list contain list of Postman API Keys
      */
-    public static PostmanKeyListDTO fromPostmanAPTKeyListToPostmanAPIKeyListDTO(List<PostmanAPIKey> postmankeys) {
+    public static PostmanKeyListDTO fromPostmanAPIKeyListToPostmanAPIKeyListDTO(List<PostmanAPIKey> postmankeys) {
         PostmanKeyListDTO postmanAPIKeyListDTO = new PostmanKeyListDTO();
         postmanAPIKeyListDTO.setCount(postmankeys.size());
         postmanAPIKeyListDTO.setList(fromPostmanAPIKeyListToPostmanAPIKeyDTOList(postmankeys));
@@ -40,10 +41,10 @@ public class PostmanAPIKeyMappingUtil {
     }
 
     /**
-     * Converts Psotamn API Key List to PostmanAPIKeyDTO List.
+     * Converts Postman API Key List to PostmanAPIKeyDTO List.
      *
      * @param postmankeys List of Postman API Keys
-     * @return PsotamanAPIKeyDTO list
+     * @return PostmanAPIKeyDTO list
      */
     private static List<PostmanAPIKeyDTO> fromPostmanAPIKeyListToPostmanAPIKeyDTOList(List<PostmanAPIKey> postmankeys) {
         List<PostmanAPIKeyDTO> APIKeyDTOs = new ArrayList<>();
@@ -55,5 +56,33 @@ public class PostmanAPIKeyMappingUtil {
             APIKeyDTOs.add(APIKeyDTO);
         }
         return APIKeyDTOs;
+    }
+
+    /**
+     * Converts a PostmanAPIKeyDTO to PostmanAPIKey
+     *
+     * @param PostmanAPIKeyDTO
+     * @return PostmanAPIKey
+     */
+    public static PostmanAPIKey fromPostmanAPIKeyDTOToPostmanAPIKey(PostmanAPIKeyDTO PostmanAPIKeyDTO) throws CryptoException {
+        PostmanAPIKey postmanKey = new PostmanAPIKey();
+        postmanKey.setId(PostmanAPIKeyDTO.getId());
+        postmanKey.setKeyName(PostmanAPIKeyDTO.getKeyName());
+        postmanKey.setKeyValue(PostmanAPIKeyDTO.getKeyValue());
+        return postmanKey;
+    }
+
+    /**
+     * Converts a PostmanAPIKey to PostmanAPIKeyDTO
+     *
+     * @param postmanKey
+     * @return postmanKeyDTO
+     */
+    public static PostmanAPIKeyDTO fromPostmanAPIKeyToPostmanAPIKeyDTO(PostmanAPIKey postmanKey) throws CryptoException {
+        PostmanAPIKeyDTO postmanKeyDTO = new PostmanAPIKeyDTO();
+        postmanKeyDTO.setId(postmanKey.getId());
+        postmanKeyDTO.setKeyName(postmanKey.getKeyName());
+        postmanKeyDTO.setKeyValue(postmanKey.getKeyValue());
+        return postmanKeyDTO;
     }
 }

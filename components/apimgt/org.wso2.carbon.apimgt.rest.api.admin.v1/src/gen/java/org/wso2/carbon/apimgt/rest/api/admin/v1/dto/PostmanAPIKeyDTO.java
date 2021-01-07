@@ -23,7 +23,6 @@ public class PostmanAPIKeyDTO   {
     private String id = null;
     private String keyName = null;
     private String keyValue = null;
-    private Integer numberOfKeys = null;
 
   /**
    **/
@@ -33,7 +32,7 @@ public class PostmanAPIKeyDTO   {
   }
 
   
-  @ApiModelProperty(example = "1", value = "")
+  @ApiModelProperty(example = "01234567-0123-0123-0123-012345678901", value = "")
   @JsonProperty("id")
   public String getId() {
     return id;
@@ -78,23 +77,6 @@ public class PostmanAPIKeyDTO   {
     this.keyValue = keyValue;
   }
 
-  /**
-   **/
-  public PostmanAPIKeyDTO numberOfKeys(Integer numberOfKeys) {
-    this.numberOfKeys = numberOfKeys;
-    return this;
-  }
-
-  
-  @ApiModelProperty(example = "1", value = "")
-  @JsonProperty("numberOfKeys")
-  public Integer getNumberOfKeys() {
-    return numberOfKeys;
-  }
-  public void setNumberOfKeys(Integer numberOfKeys) {
-    this.numberOfKeys = numberOfKeys;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -107,13 +89,12 @@ public class PostmanAPIKeyDTO   {
     PostmanAPIKeyDTO postmanAPIKey = (PostmanAPIKeyDTO) o;
     return Objects.equals(id, postmanAPIKey.id) &&
         Objects.equals(keyName, postmanAPIKey.keyName) &&
-        Objects.equals(keyValue, postmanAPIKey.keyValue) &&
-        Objects.equals(numberOfKeys, postmanAPIKey.numberOfKeys);
+        Objects.equals(keyValue, postmanAPIKey.keyValue);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, keyName, keyValue, numberOfKeys);
+    return Objects.hash(id, keyName, keyValue);
   }
 
   @Override
@@ -124,7 +105,6 @@ public class PostmanAPIKeyDTO   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    keyName: ").append(toIndentedString(keyName)).append("\n");
     sb.append("    keyValue: ").append(toIndentedString(keyValue)).append("\n");
-    sb.append("    numberOfKeys: ").append(toIndentedString(numberOfKeys)).append("\n");
     sb.append("}");
     return sb.toString();
   }

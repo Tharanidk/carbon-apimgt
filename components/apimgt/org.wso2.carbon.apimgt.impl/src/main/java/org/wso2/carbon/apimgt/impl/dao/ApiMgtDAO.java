@@ -108,6 +108,7 @@ import org.wso2.carbon.apimgt.impl.workflow.WorkflowConstants;
 import org.wso2.carbon.apimgt.impl.workflow.WorkflowExecutorFactory;
 import org.wso2.carbon.apimgt.impl.workflow.WorkflowStatus;
 import org.wso2.carbon.core.util.CryptoException;
+import org.wso2.carbon.core.util.CryptoUtil;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.user.core.util.UserCoreUtil;
@@ -8981,6 +8982,67 @@ public class ApiMgtDAO {
         }
     }
 
+
+
+
+
+    /**
+     * Adds a Postman API Key
+     *
+     * @param tenantID     Logged in user's tenant ID
+     * @param postmankey   Postman API Key
+     * @return Category
+     */
+    public PostmanAPIKey addPostmanAPIKey(int tenantID, PostmanAPIKey postmankey) throws APIManagementException {
+        String uuid = UUID.randomUUID().toString();
+        postmankey.setId(uuid);
+        try (Connection connection = APIMgtDBUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQLConstants.ADD_POSTMAN_API_KEY_SQL)) {
+            statement.setString(1, uuid);
+            statement.setInt(2, tenantID);
+            statement.setString(3, postmankey.getKeyName());
+            statement.setString(4, CryptoUtil.getDefaultCryptoUtil().encryptAndBase64Encode(postmankey.getKeyValue().getBytes(Charset.defaultCharset())));
+            statement.executeUpdate();
+        } catch (SQLException | CryptoException e) {
+            handleException("Failed to add Category: " + uuid, e);
+        }
+        return postmankey;
+    }
+
+    /**
+     * Checks whether the given postman API Key is already available under given tenant domain with any UUID other than the given UUID
+     *
+     * @param keyName
+     * @param uuid
+     * @param tenantID
+     * @return
+     */
+    public boolean isPostmanAPIKeyExists(String keyName, String uuid, int tenantID) throws APIManagementException {
+        String sql = SQLConstants.IS_POSTMAN_API_KEY_NAME_EXISTS;
+        if (uuid != null) {
+            sql = SQLConstants.IS_API_POSTMAN_API_KEY_NAME_EXISTS_FOR_ANOTHER_UUID;
+        }
+        try (Connection connection = APIMgtDBUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, keyName);
+            statement.setInt(2, tenantID);
+            if (uuid != null) {
+                statement.setString(3, uuid);
+            }
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt("API_CATEGORY_COUNT");
+                if (count > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            handleException("Failed to check whether API category name : " + keyName + " exists", e);
+        }
+        return false;
+    }
+
     private class SubscriptionInfo {
         private int subscriptionId;
         private String tierId;
@@ -14704,7 +14766,7 @@ public class ApiMgtDAO {
      * @param tenantID
      * @return Postman API Key List
      */
-    public List<PostmanAPIKey> getAllPostmanAPIKeys(int tenantID) throws APIManagementException {
+    public List<PostmanAPIKey> getAllPostmanAPIKeys(int tenantID) throws APIManagementException, CryptoException {
         List<PostmanAPIKey> KeysList = new ArrayList<>();
         try (Connection connection = APIMgtDBUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQLConstants.GET_POSTMAN_KEY_BY_TENANT_ID_SQL)) {
@@ -14719,7 +14781,7 @@ public class ApiMgtDAO {
                 PostmanAPIKey postmankey = new PostmanAPIKey();
                 postmankey.setId(id);
                 postmankey.setKeyName(keyName);
-                postmankey.setKeyValue(keyValue);
+                postmankey.setKeyValue(new String(CryptoUtil.getDefaultCryptoUtil().base64DecodeAndDecrypt(keyValue)));
                 postmankey.setTenantID(tenantID);
 
                 KeysList.add(postmankey);

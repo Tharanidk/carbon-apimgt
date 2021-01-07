@@ -3095,6 +3095,39 @@ paths:
       - lang: Shell
         source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
           "https://127.0.0.1:9443/api/am/admin/v1/postmanKey"'
+    post:
+      tags:
+      - Postman Key
+      summary: Add a Postman API Key
+      description: |
+        Add a new postman key under the tenant
+      requestBody:
+        description: |
+          API Key value that should be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostmanAPIKey'
+        required: true
+      responses:
+        201:
+          description: |
+            Created.
+            Successful response with the newly created object as entity in the body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostmanAPIKey'
+        400:
+          $ref: '#/components/responses/BadRequest'
+      security:
+        - OAuth2Security:
+            - apim:admin
+            - apim:admin_operations
+      x-code-samples:
+        - lang: Shell
+          source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
+              -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/am/admin/v1/postmanKey"'
 
   ######################################################
   # The Admin settings List
@@ -4744,22 +4777,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/APICategory'
-    PostmanKey:
+    PostmanAPIKey:
       title: Postman API Key
       required:
-        - name
+        - keyName
+        - keyValue
       type: object
       properties:
         id:
           type: string
           readOnly: true
-          example: 01
-        name:
+          example: 01234567-0123-0123-0123-012345678901
+        keyName:
           maxLength: 255
           minLength: 1
           type: string
           example: MyKey 01
-        Key:
+        keyValue:
           type: string
           example: Postman API Key of the User
 
@@ -4775,7 +4809,7 @@ components:
         list:
           type: array
           items:
-            $ref: '#/components/schemas/PostmanKey'
+            $ref: '#/components/schemas/PostmanAPIKey'
     FileInfo:
       title: File Information including meta data
       type: object

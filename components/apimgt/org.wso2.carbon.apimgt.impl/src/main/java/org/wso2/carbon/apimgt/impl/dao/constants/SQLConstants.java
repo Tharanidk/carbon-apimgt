@@ -3107,6 +3107,15 @@ public class SQLConstants {
 
     public static final String GET_POSTMAN_KEY_BY_TENANT_ID_SQL = "SELECT * FROM POSTMAN_API_KEYS WHERE TENANT_ID = ?";
 
+    public static final String ADD_POSTMAN_API_KEY_SQL = "INSERT INTO POSTMAN_API_KEYS "
+            + "(UUID, TENANT_ID, KEY_NAME, KEY_VALUE) VALUES (?,?,?,?)";
+
+    public static final String IS_POSTMAN_API_KEY_NAME_EXISTS = "SELECT COUNT(UUID) AS POSTMAN_API_KEY_COUNT FROM "
+            + "POSTMAN_API_KEYS WHERE LOWER(KEY_NAME) = LOWER(?) AND TENANT_ID = ?";
+
+    public static final String IS_API_POSTMAN_API_KEY_NAME_EXISTS_FOR_ANOTHER_UUID = "SELECT COUNT(UUID) AS POSTMAN_API_KEY_COUNT FROM "
+            + "POSTMAN_API_KEYS WHERE LOWER(KEY_NAME) = LOWER(?) AND TENANT_ID = ? AND UUID != ?";
+
     /** API Categories related constants **/
 
     public static final String ADD_CATEGORY_SQL = "INSERT INTO AM_API_CATEGORIES "

@@ -955,7 +955,7 @@ public class APIAdminImpl implements APIAdmin {
         apiMgtDAO.deleteTenantTheme(tenantId);
     }
 
-    public List<PostmanAPIKey> getAllPostmanAPIKeys(int tenantId) throws APIManagementException {
+    public List<PostmanAPIKey> getAllPostmanAPIKeys(int tenantId) throws APIManagementException, CryptoException {
 
         return apiMgtDAO.getAllPostmanAPIKeys(tenantId);
     }
@@ -963,7 +963,27 @@ public class APIAdminImpl implements APIAdmin {
     @Override
     public List<PostmanAPIKey> getAPIKeysOftenant(int tenantId) throws APIManagementException {
         String username = CarbonContext.getThreadLocalCarbonContext().getUsername();
-        List<PostmanAPIKey> KeysList = getAllPostmanAPIKeys(tenantId);
+        List<PostmanAPIKey> KeysList = null;
+        try {
+            KeysList = getAllPostmanAPIKeys(tenantId);
+        } catch (CryptoException e) {
+            e.printStackTrace();
+        }
         return KeysList;
+    }
+
+    @Override
+    public PostmanAPIKey addPostmanAPIKey(PostmanAPIKey postmankey, String userName) throws APIManagementException {
+        int tenantID = APIUtil.getTenantId(userName);
+        if (isCategoryNameExists(postmankey.getKeyName(), null, tenantID)) {
+            APIUtil.handleException("Postman APIKey with name '" + postmankey.getKeyName() + "' already exists");
+        }
+        return apiMgtDAO.addPostmanAPIKey(tenantID, postmankey);
+    }
+
+
+    public boolean isPostmanAPIKeyExists(String keyName, String uuid, int tenantID) throws APIManagementException {
+
+        return apiMgtDAO.isPostmanAPIKeyExists(keyName, uuid, tenantID);
     }
 }

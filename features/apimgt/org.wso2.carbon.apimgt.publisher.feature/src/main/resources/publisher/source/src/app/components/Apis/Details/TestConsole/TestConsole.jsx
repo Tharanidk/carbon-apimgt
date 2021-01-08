@@ -38,6 +38,15 @@ import openapiToPostman from 'openapi-to-postmanv2';
 import swaggerToPostman from 'swagger2-postman2-converter';
 import fileDownload from 'js-file-download';
 import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import { MenuItem } from '@material-ui/core';
+
 /**
  * @inheritdoc
  * @param {*} theme theme
@@ -144,6 +153,7 @@ class TestConsole extends React.Component {
             selectedKeyType: 'PRODUCTION',
             keys: [],
             loading: false,
+            isDialogOpen: false,
         };
         this.accessTokenProvider = this.accessTokenProvider.bind(this);
         this.updateSwagger = this.updateSwagger.bind(this);
@@ -156,6 +166,8 @@ class TestConsole extends React.Component {
         this.setSelectedKeyType = this.setSelectedKeyType.bind(this);
         this.setKeys = this.setKeys.bind(this);
         this.updateAccessToken = this.updateAccessToken.bind(this);
+        this.openDialog = this.openDialog.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.WORKFLOW_STATUS = {
             CREATED: 'CREATED',
             APPROVED: 'APPROVED',
@@ -343,6 +355,14 @@ class TestConsole extends React.Component {
         });
     };
 
+    openDialog() {
+        this.setState({ isDialogOpen: true })
+    }
+
+    handleClose() {
+        this.setState({ isDialogOpen: false })
+    }
+
     convertToPostman(fr) {
         openapiToPostman.convert({ type: 'string', data: fr },
             {}, (err, conversionResult) => {
@@ -369,6 +389,11 @@ class TestConsole extends React.Component {
         const restApi = new API();
         const postmankey = 'PMAK-5fae3b6cb5024c0054e153a8-a7c7d68475e7b1a6cb03a99e3f83290286';
         restApi.publishToPostman(api.id, postmankey);
+    }
+
+    getPostmanAPIKeys(){
+        const restApi = new API();
+        restApi.getPostmanAPIKeys();
     }
 
     /**
@@ -445,10 +470,11 @@ class TestConsole extends React.Component {
      */
     render() {
         const { classes } = this.props;
+
         const {
             swagger, api, securitySchemeType, selectedEnvironment, productionAccessToken, sandboxAccessToken,
             labels, environments, scopes, username, password, selectedKeyType, serverError, settings, host, baseUrl,
-            loading,
+            loading, isDialogOpen
         } = this.state;
         if (serverError) {
             return (
@@ -472,8 +498,49 @@ class TestConsole extends React.Component {
         const isProtoTyped = api.lifeCycleStatus.toLowerCase() === 'prototyped';
         const enableForTest = api.enableStore === false;
         const downloadSwagger = JSON.stringify({ ...swagger });
+
         return (
             <>
+
+                <Button onClick={this.openDialog}>
+                    Publish to Postman
+                </Button>
+
+                <Dialog open={isDialogOpen} onClose={this.handleClose} aria-labelledby='form-dialog-title'>
+                    <DialogTitle id='form-dialog-title'>
+                        <h1>Publish a Postman Collection</h1>
+                    </DialogTitle>
+                    <DialogContent>
+                        <h3>Select a Postman API Key to Publish the Postman Collection to Postman Web application</h3>
+                        <FormControl
+                            variant='outlined'
+                            className={classes.FormControlRoot}
+
+                        >
+                            <InputLabel classes={{ root: classes.labelRoot }}>
+                                <FormattedMessage
+                                    defaultMessage='Key Manager Type'
+                                    id='Admin.KeyManager.form.type'
+                                />
+                                <span className={classes.error}>*</span>
+                            </InputLabel>
+                            <Select
+                                name='type'
+                                classes={{ select: classes.select }}
+                            >
+                                {[{ type: '1', displayName: 'item1' }, { type: '2', displayName: 'item2' }].map((item) => (
+                                    <MenuItem key={item.type} value={item.type}>
+                                        {item.displayName || item.type}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </DialogContent>
+                    <Button onClick={this.handleClose}>
+                        Close
+                </Button>
+                </Dialog>
+
                 <Grid container>
                     <Grid xs={10} item />
                     <Grid xs={1} item>
@@ -494,7 +561,9 @@ class TestConsole extends React.Component {
                         </Button>
 
                     </Grid>
+
                 </Grid>
+
 
                 {!isProtoTyped && (
                     <>

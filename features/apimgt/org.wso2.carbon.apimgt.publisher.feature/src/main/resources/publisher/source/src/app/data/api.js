@@ -219,11 +219,21 @@ class API extends Resource {
 
     publishToPostman(apiId, postmanKey) {
         const promisePublish = this.client.then(client => {
+            console.log(client);
             return client.apis['Postman Collection'].post_apis__apiId__publishToPostman(
                 {
-                    apiId: apiId,                
+                    apiId: apiId,
                     postmanApiKey: postmanKey,
                 },
+                this._requestMetaData(),
+            );
+        });
+        return promisePublish.then(response => response.body);
+    }
+
+    getPostmanAPIKeys() {
+        const promisePublish = this.client.then(client => {
+            return client.apis['Postman Collection'].post_apis__apiId__publishToPostman(
                 this._requestMetaData(),
             );
         });
